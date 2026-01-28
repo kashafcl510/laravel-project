@@ -11,7 +11,9 @@ class AuthenticationController extends Controller
 {
     public function signupPage()
     {
+
         return view('authentication.signup');
+
     }
 
     public function register(Request $request)
