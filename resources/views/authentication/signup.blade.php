@@ -1,5 +1,5 @@
-@extends('layouts.velzon')
-@section('title' , 'This is the second title')
+@extends('layouts.authLayout')
+@section('title', 'This is the second title')
 
 @section('main-content')
 
@@ -27,21 +27,29 @@
                                                     <i class="ri-double-quotes-l display-4 text-success"></i>
                                                 </div>
 
-                                                <div id="qoutescarouselIndicators" class="carousel slide" data-bs-ride="carousel">
+                                                <div id="qoutescarouselIndicators" class="carousel slide"
+                                                    data-bs-ride="carousel">
                                                     <div class="carousel-indicators">
-                                                        <button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                                                        <button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                                        <button type="button" data-bs-target="#qoutescarouselIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                                        <button type="button" data-bs-target="#qoutescarouselIndicators"
+                                                            data-bs-slide-to="0" class="active" aria-current="true"
+                                                            aria-label="Slide 1"></button>
+                                                        <button type="button" data-bs-target="#qoutescarouselIndicators"
+                                                            data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                                        <button type="button" data-bs-target="#qoutescarouselIndicators"
+                                                            data-bs-slide-to="2" aria-label="Slide 3"></button>
                                                     </div>
                                                     <div class="carousel-inner text-center text-white-50 pb-5">
                                                         <div class="carousel-item active">
-                                                            <p class="fs-15 fst-italic">" Great! Clean code, clean design, easy for customization. Thanks very much! "</p>
+                                                            <p class="fs-15 fst-italic">" Great! Clean code, clean design,
+                                                                easy for customization. Thanks very much! "</p>
                                                         </div>
                                                         <div class="carousel-item">
-                                                            <p class="fs-15 fst-italic">" The theme is really great with an amazing customer support."</p>
+                                                            <p class="fs-15 fst-italic">" The theme is really great with an
+                                                                amazing customer support."</p>
                                                         </div>
                                                         <div class="carousel-item">
-                                                            <p class="fs-15 fst-italic">" Great! Clean code, clean design, easy for customization. Thanks very much! "</p>
+                                                            <p class="fs-15 fst-italic">" Great! Clean code, clean design,
+                                                                easy for customization. Thanks very much! "</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -60,44 +68,89 @@
                                         </div>
 
                                         <div class="mt-4">
-                                            <form class="needs-validation" novalidate action="https://themesbrand.com/velzon/html/master/index.html">
+                                            <form id="signupForm" class="needs-validation" novalidate>
 
                                                 <div class="mb-3">
-                                                    <label for="useremail" class="form-label">Email <span class="text-danger">*</span></label>
-                                                    <input type="email" class="form-control" id="useremail" placeholder="Enter email address" required>
+                                                    <label for="useremail" class="form-label">Email <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="email" name='email' class="form-control" id="useremail"
+                                                        placeholder="Enter email address" required>
                                                     <div class="invalid-feedback">
                                                         Please enter email
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="username" placeholder="Enter username" required>
+                                                    <label for="username" class="form-label">Username <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" name='name' class="form-control" id="username"
+                                                        placeholder="Enter username" required>
                                                     <div class="invalid-feedback">
                                                         Please enter username
                                                     </div>
                                                 </div>
+                                                <div class="mb-3">
+                                                    <label for="userphone" class="form-label">Phone <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" id="userphone" name="phone"
+                                                        placeholder="Enter phone number" required>
+                                                </div>
+
 
                                                 <div class="mb-3">
-                                                    <label class="form-label" for="password-input">Password</label>
+                                                    <label class="form-label" for="password-input">Password<span
+                                                            class="text-danger">*</span></label>
                                                     <div class="position-relative auth-pass-inputgroup">
-                                                        <input type="password" class="form-control pe-5 password-input" onpaste="return false" placeholder="Enter password" id="password-input" aria-describedby="passwordInput" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
-                                                        <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon material-shadow-none" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+                                                        <input type="password" name='password'
+                                                            class="form-control pe-5 password-input" onpaste="return false"
+                                                            placeholder="Enter password" id="password-input"
+                                                            aria-describedby="passwordInput"
+                                                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                                                        <button
+                                                            class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon material-shadow-none"
+                                                            type="button" id="password-addon"><i
+                                                                class="ri-eye-fill align-middle"></i></button>
                                                         <div class="invalid-feedback">
                                                             Please enter password
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="mb-3">
+                        <label for="password_confirmation" class="form-label">Confirm Password</label>
+                        <div class="position-relative auth-pass-inputgroup mb-3">
+                            <input type="password" name="password_confirmation"
+                                class="form-control pe-5 password-input @error('password_confirmation') is-invalid @enderror"
+                                id="password_confirmation" placeholder="Confirm password" required>
+                            <button
+                                class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                                type="button" id="password-confirm-addon">
+                                <i class="ri-eye-fill align-middle"></i>
+                            </button>
+                            <div class="invalid-feedback">
+                                                            Please enter confirm password
+                                                        </div>
+                           
+                        </div>
+                    </div>
+
 
                                                 <div class="mb-4">
-                                                    <p class="mb-0 fs-12 text-muted fst-italic">By registering you agree to the Velzon <a href="#" class="text-primary text-decoration-underline fst-normal fw-medium">Terms of Use</a></p>
+                                                    <p class="mb-0 fs-12 text-muted fst-italic">By registering you agree to
+                                                        the Velzon <a href="#"
+                                                            class="text-primary text-decoration-underline fst-normal fw-medium">Terms
+                                                            of Use</a></p>
                                                 </div>
 
                                                 <div id="password-contain" class="p-3 bg-light mb-2 rounded">
                                                     <h5 class="fs-13">Password must contain:</h5>
-                                                    <p id="pass-length" class="invalid fs-12 mb-2">Minimum <b>8 characters</b></p>
-                                                    <p id="pass-lower" class="invalid fs-12 mb-2">At <b>lowercase</b> letter (a-z)</p>
-                                                    <p id="pass-upper" class="invalid fs-12 mb-2">At least <b>uppercase</b> letter (A-Z)</p>
-                                                    <p id="pass-number" class="invalid fs-12 mb-0">A least <b>number</b> (0-9)</p>
+                                                    <p id="pass-length" class="invalid fs-12 mb-2">Minimum <b>8
+                                                            characters</b></p>
+                                                    <p id="pass-lower" class="invalid fs-12 mb-2">At <b>lowercase</b>
+                                                        letter (a-z)</p>
+                                                    <p id="pass-upper" class="invalid fs-12 mb-2">At least
+                                                        <b>uppercase</b> letter (A-Z)
+                                                    </p>
+                                                    <p id="pass-number" class="invalid fs-12 mb-0">A least <b>number</b>
+                                                        (0-9)</p>
                                                 </div>
 
                                                 <div class="mt-4">
@@ -110,17 +163,28 @@
                                                     </div>
 
                                                     <div>
-                                                        <button type="button" class="btn btn-primary btn-icon waves-effect waves-light"><i class="ri-facebook-fill fs-16"></i></button>
-                                                        <button type="button" class="btn btn-danger btn-icon waves-effect waves-light"><i class="ri-google-fill fs-16"></i></button>
-                                                        <button type="button" class="btn btn-dark btn-icon waves-effect waves-light"><i class="ri-github-fill fs-16"></i></button>
-                                                        <button type="button" class="btn btn-info btn-icon waves-effect waves-light"><i class="ri-twitter-fill fs-16"></i></button>
+                                                        <button type="button"
+                                                            class="btn btn-primary btn-icon waves-effect waves-light"><i
+                                                                class="ri-facebook-fill fs-16"></i></button>
+                                                        <button type="button"
+                                                            class="btn btn-danger btn-icon waves-effect waves-light"><i
+                                                                class="ri-google-fill fs-16"></i></button>
+                                                        <button type="button"
+                                                            class="btn btn-dark btn-icon waves-effect waves-light"><i
+                                                                class="ri-github-fill fs-16"></i></button>
+                                                        <button type="button"
+                                                            class="btn btn-info btn-icon waves-effect waves-light"><i
+                                                                class="ri-twitter-fill fs-16"></i></button>
                                                     </div>
                                                 </div>
                                             </form>
                                         </div>
 
                                         <div class="mt-5 text-center">
-                                            <p class="mb-0">Already have an account ? <a href="auth-signin-cover.html" class="fw-semibold text-primary text-decoration-underline"> Signin</a> </p>
+                                            <p class="mb-0">Already have an account ? <a
+                                                    href="{{ route('signin.page') }}"
+                                                    class="fw-semibold text-primary text-decoration-underline"> Signin</a>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -137,9 +201,59 @@
         </div>
         <!-- end auth page content -->
 
-        
+
     </div>
     <!-- end auth-page-wrapper -->
-    
-@endsection
 
+
+<script src="{{ asset('assets/js/pages/password-addon.init.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            $('#signupForm').on('submit', function(e) {
+                 e.preventDefault();
+                if (!this.checkValidity()) {
+                    $(this).addClass('was-validated');
+                    return;
+                }
+
+                var formData = {
+                    name: $('#username').val(),
+                    email: $('#useremail').val(),
+                    phone: $('#userphone').val(),
+                    password: $('#password-input').val(),
+                    password_confirmation: $('#password_confirmation').val(),
+                };
+
+                $.ajax({
+                    url: "{{ route('register') }}",
+                    method: "POST",
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                         setTimeout(function() {
+                         window.location.href = "{{ route('signin.page') }}";
+                        },2000);
+                    },
+                    error: function(xhr) {
+    let errors = xhr.responseJSON.errors;
+    if (errors.password) {
+        alert(errors.password[0]);
+    }
+    if (errors.password_confirmation) {
+        alert(errors.password_confirmation[0]);
+    }
+}
+
+                });
+            });
+
+        });
+    </script>
+
+
+@endsection
