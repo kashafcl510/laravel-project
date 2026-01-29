@@ -6,7 +6,7 @@
     <!-- auth-page wrapper -->
     <div class="auth-page-wrapper auth-bg-cover py-5 d-flex justify-content-center align-items-center min-vh-100">
         <div class="bg-overlay"></div>
-   
+
         <div class="auth-page-content overflow-hidden pt-lg-5">
             <div class="container">
                 <div class="row">
@@ -75,6 +75,7 @@
                                                             class="text-danger">*</span></label>
                                                     <input type="email" name='email' class="form-control" id="useremail"
                                                         placeholder="Enter email address" required>
+                                                        <div class="invalid-feedback" id="email-error"></div>
                                                     <div class="invalid-feedback">
                                                         Please enter email
                                                     </div>
@@ -84,6 +85,7 @@
                                                             class="text-danger">*</span></label>
                                                     <input type="text" name='name' class="form-control" id="username"
                                                         placeholder="Enter username" required>
+                                                        <div class="invalid-feedback" id="username-error"></div>
                                                     <div class="invalid-feedback">
                                                         Please enter username
                                                     </div>
@@ -93,7 +95,13 @@
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" id="userphone" name="phone"
                                                         placeholder="Enter phone number" required>
+                                                          <div class="invalid-feedback" id="username-error"></div>
+                                                    <div class="invalid-feedback">
+                                                        Please enter phone
+                                                    </div>
+
                                                 </div>
+
 
 
                                                 <div class="mb-3">
@@ -109,28 +117,34 @@
                                                             class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon material-shadow-none"
                                                             type="button" id="password-addon"><i
                                                                 class="ri-eye-fill align-middle"></i></button>
+                                                                 <div class="invalid-feedback" id="password-error"></div>
                                                         <div class="invalid-feedback">
                                                             Please enter password
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
-                        <label for="password_confirmation" class="form-label">Confirm Password</label>
-                        <div class="position-relative auth-pass-inputgroup mb-3">
-                            <input type="password" name="password_confirmation"
-                                class="form-control pe-5 password-input @error('password_confirmation') is-invalid @enderror"
-                                id="password_confirmation" placeholder="Confirm password" required>
-                            <button
-                                class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
-                                type="button" id="password-confirm-addon">
-                                <i class="ri-eye-fill align-middle"></i>
-                            </button>
-                            <div class="invalid-feedback">
+                                                    <label for="password_confirmation" class="form-label">Confirm
+                                                        Password</label>
+                                                    <div class="position-relative auth-pass-inputgroup mb-3">
+                                                        <input type="password" name="password_confirmation"
+                                                            class="form-control pe-5 password-input @error('password_confirmation') is-invalid @enderror"
+                                                            id="password_confirmation" placeholder="Confirm password"
+                                                            required>
+                                                        <button
+                                                            class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                                                            type="button" id="password-confirm-addon">
+                                                            <i class="ri-eye-fill align-middle"></i>
+                                                        </button>
+                                                         <div class="invalid-feedback" id="password_confirmation-error"></div>
+                                                        <div class="invalid-feedback">
                                                             Please enter confirm password
                                                         </div>
-                           
-                        </div>
-                    </div>
+
+                                                    </div>
+                                                </div>
+                                                <div id="register-error" class="alert alert-danger d-none mb-3"></div>
+
 
 
                                                 <div class="mb-4">
@@ -206,14 +220,14 @@
     <!-- end auth-page-wrapper -->
 
 
-<script src="{{ asset('assets/js/pages/password-addon.init.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/password-addon.init.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <script>
         $(document).ready(function() {
 
             $('#signupForm').on('submit', function(e) {
-                 e.preventDefault();
+                e.preventDefault();
                 if (!this.checkValidity()) {
                     $(this).addClass('was-validated');
                     return;
@@ -235,21 +249,22 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(response) {
-                         setTimeout(function() {
-                         window.location.href = "{{ route('signin.page') }}";
-                        },2000);
+                        setTimeout(function() {
+                            window.location.href = "{{ route('signin.page') }}";
+                        }, 2000);
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
+                if (xhr.status === 422) {
                     let errors = xhr.responseJSON.errors;
-    if (errors.password) {
-        alert(errors.password[0]);
-    }
-    if (errors.password_confirmation) {
-        alert(errors.password_confirmation[0]);
-    }
-}
 
-                });
+                    $.each(errors, function (key, messages) {
+                        let input = $('[name="' + key + '"]');
+                        input.addClass('is-invalid');
+                        input.next('.invalid-feedback').text(messages[0]);
+                    });
+                }
+            }
+        });
             });
 
         });

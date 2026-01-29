@@ -6,10 +6,16 @@ use  App\Http\Controllers\AuthenticationController;
 
 
 Route::get('/', function () {
-    
+
     return view('authentication.signin');
 
 });
+
+Route::get('/forget', [AuthenticationController::class, 'forgetPage'])->name('forget.page');
+Route::post('/forget-password' , [AuthenticationController::class, 'forgetPassword'])->name('forget.password');
+
+Route::get('/reset', [AuthenticationController::class, 'resetPage'])->name('reset.page');
+Route::post('/reset-password' , [AuthenticationController::class, 'resetPassword'])->name('reset.password');
 
 
 Route::get('/signup', [AuthenticationController::class, 'signupPage'])->name('signup.page');
@@ -35,7 +41,7 @@ Route::get('/dashboard' , [AuthenticationController::class, 'dashboardPage'])->n
 
 // admin routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function(){
-    
+
 });
 
 

@@ -976,27 +976,4 @@
              </div>
          </div>
 
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-
-         <script>
-            $(document).on('click', '#logoutBtn', function (e) {
-            e.preventDefault();
-
-    $.ajax({
-        url: "{{ route('logout') }}",
-        type: "POST",
-        data: {},
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function () {
-            window.location.href = "{{ route('signin.page') }}";
-        },
-        error: function (xhr) {
-            console.error(xhr.responseText);
-            alert('Logout failed');
-        }
-    });
-});
-</script>

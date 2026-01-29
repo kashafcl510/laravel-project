@@ -72,20 +72,25 @@
                                         <div class="mt-4">
                                             <form id="signinForm" class="needs-validation" novalidate>
 
+
                                                 <div class="mb-3">
                                                     <label for="useremail" class="form-label">Email <span
                                                             class="text-danger">*</span></label>
                                                     <input type="email" name='email' class="form-control" id="useremail"
                                                         placeholder="Enter email address" required>
-                                                    <div class="invalid-feedback">
-                                                        Please enter email
-                                                    </div>
+                                                    <div class="invalid-feedback" id="email-error"></div>
+                                                     <div class="invalid-feedback">
+                                                            Please enter email
+                                                        </div>
+
+
+
                                                 </div>
 
 
                                                 <div class="mb-3">
                                                     <div class="float-end">
-                                                        <a href="" class="text-muted">Forgot password?</a>
+                                                        <a href="{{ route('forget.page') }}" class="text-muted">Forgot password?</a>
                                                     </div>
                                                     <label for="password-input" class="form-label">Password <span
                                                             class="text-danger">*</span></label>
@@ -98,7 +103,8 @@
                                                             type="button" id="password-addon">
                                                             <i class="ri-eye-fill align-middle"></i>
                                                         </button>
-                                                        <div class="invalid-feedback">
+                                                          <div class="invalid-feedback" id="password-error"></div>
+                                                            <div class="invalid-feedback">
                                                             Please enter password
                                                         </div>
                                                     </div>
@@ -109,6 +115,7 @@
                                                         <label class="form-check-label" for="auth-remember-check">Remember
                                                             me</label>
                                                     </div>
+                                                       <div id="login-error" class="alert alert-danger d-none mb-2 mt-2"></div>
 
                                                     <div class="mt-4">
                                                         <button class="btn btn-success w-100" type="submit">Sign
@@ -165,7 +172,7 @@
     </div>
     <!-- end auth-page-wrapper -->
 
-    <script src="{{ asset('assets/js/pages/password-addon.init.js') }}"></script>
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 
@@ -190,11 +197,37 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(res) {
-                         window.location.href = "{{ route('site.dashboard') }}";
+                        window.location.href = "{{ route('site.dashboard') }}";
                     },
                     error: function(xhr) {
-                        console.error('Error in login ', xhr);
-                    }
+
+    $('.invalid-feedback').text('');
+    $('input').removeClass('is-invalid');
+
+    if (xhr.status === 422) {
+        let errors = xhr.responseJSON.errors;
+
+        if (errors.email) {
+            $('#useremail')
+                .addClass('is-invalid');
+            $('#email-error')
+                .text(errors.email[0]);
+        }
+
+        if (errors.password) {
+            $('#password-input')
+                .addClass('is-invalid');
+            $('#password-error')
+                .text(errors.password[0]);
+        }
+    }
+    else {
+        $('#login-error')
+            .removeClass('d-none')
+            .text(xhr.responseJSON.message);
+    }
+}
+
                 });
             });
         })
