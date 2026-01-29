@@ -15,6 +15,12 @@ class AuthenticationController extends Controller
         return view('authentication.signup');
 
     }
+    public function dashboardPage()
+    {
+
+        return view('site.dashboard');
+
+    }
 
     public function register(Request $request)
     {

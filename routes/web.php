@@ -6,7 +6,9 @@ use  App\Http\Controllers\AuthenticationController;
 
 
 Route::get('/', function () {
+    
     return view('authentication.signin');
+
 });
 
 
@@ -27,7 +29,7 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logou
 
 //user routes
 Route::middleware(['auth', 'role:user'])->group(function(){
-
+Route::get('/dashboard' , [AuthenticationController::class, 'dashboardPage'])->name('site.dashboard');
 });
 
 

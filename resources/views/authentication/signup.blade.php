@@ -1,12 +1,12 @@
 @extends('layouts.authLayout')
-@section('title', 'This is the second title')
+@section('title', 'Register')
 
 @section('main-content')
 
     <!-- auth-page wrapper -->
     <div class="auth-page-wrapper auth-bg-cover py-5 d-flex justify-content-center align-items-center min-vh-100">
         <div class="bg-overlay"></div>
-        <!-- auth-page content -->
+   
         <div class="auth-page-content overflow-hidden pt-lg-5">
             <div class="container">
                 <div class="row">
@@ -240,7 +240,7 @@
                         },2000);
                     },
                     error: function(xhr) {
-    let errors = xhr.responseJSON.errors;
+                    let errors = xhr.responseJSON.errors;
     if (errors.password) {
         alert(errors.password[0]);
     }

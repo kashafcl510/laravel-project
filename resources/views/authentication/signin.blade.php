@@ -1,5 +1,5 @@
 @extends('layouts.authLayout')
-@section('title', 'This is the second title')
+@section('title', 'Login')
 
 @section('main-content')
 
@@ -190,7 +190,7 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(res) {
-                        alert('successful')
+                         window.location.href = "{{ route('site.dashboard') }}";
                     },
                     error: function(xhr) {
                         console.error('Error in login ', xhr);
