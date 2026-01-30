@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 class ResetPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
-    
+
     public $reseturl;
     public $subject;
 

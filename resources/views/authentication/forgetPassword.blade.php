@@ -96,7 +96,7 @@
 
                                         <div class="mt-5 text-center">
                                             <p class="mb-0">Wait, I remember my password... <a
-                                                    href="{{ route('signin.page') }}"
+                                                    href="{{ route('login') }}"
                                                     class="fw-semibold text-primary text-decoration-underline"> Click here
                                                 </a> </p>
                                         </div>

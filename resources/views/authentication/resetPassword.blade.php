@@ -61,7 +61,7 @@
                                         <p class="text-muted">Your new password must be different from previous used password.</p>
 
                                         <div class="p-2">
-                                            <form  id="resetPassword">
+                                            <form  id="resetPasswordForm" novalidate>
 
                                                 <input type="hidden" name="email" value="{{ request('email') }}">
                                                 <input type="hidden" name="token" value="{{ request('token') }}">
@@ -82,7 +82,7 @@
                                                     <div class="position-relative auth-pass-inputgroup mb-3">
                                                         <input type="password" name="password_confirmation" class="form-control pe-5 password-input" onpaste="return false" placeholder="Confirm password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" id="confirm-password-input" required>
                                                         <span class="text-danger " id="passwordConfirmError" ></span>
-                                                        <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon material-shadow-none" type="button" id="confirm-password-input"><i class="ri-eye-fill align-middle"></i></button>
+                                                        <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon material-shadow-none" type="button" id="confirm-password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                                     </div>
                                                 </div>
 
@@ -102,13 +102,13 @@
                                                 <div class="mt-4">
                                                     <button class="btn btn-success w-100" type="submit">Reset Password</button>
                                                 </div>
-                                                <div id="responsemessage" class="mt-3 text-center" ></div>
+                                                <div id="responseMessage" class="mt-3 text-center" ></div>
 
                                             </form>
                                         </div>
 
                                         <div class="mt-5 text-center">
-                                            <p class="mb-0">Wait, I remember my password... <a href="{{ route('signin.page') }}" class="fw-semibold text-primary text-decoration-underline"> Click here </a> </p>
+                                            <p class="mb-0">Wait, I remember my password... <a href="{{ route('login') }}" class="fw-semibold text-primary text-decoration-underline"> Click here </a> </p>
                                         </div>
                                     </div>
                                 </div>
@@ -166,6 +166,9 @@ $(document).ready(function () {
             url: "{{ route('reset.password') }}",
             type: "POST",
             data: formData,
+             headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
             beforeSend: function () {
                 $('button[type="submit"]').prop('disabled', true);
             },
@@ -175,7 +178,7 @@ $(document).ready(function () {
                 );
 
                 setTimeout(() => {
-                    window.location.href = "{{ route('signin.page') }}";
+                    window.location.href = "{{ route('login') }}";
                 }, 2000);
             },
             error: function (xhr) {

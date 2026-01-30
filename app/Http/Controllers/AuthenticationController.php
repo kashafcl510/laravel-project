@@ -36,6 +36,15 @@ class AuthenticationController extends Controller
 
 
 
+    public function adminDashboardPage()
+    {
+
+        return view('admin.dashboard');
+
+    }
+
+
+
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -44,9 +53,11 @@ class AuthenticationController extends Controller
             'phone' => 'required',
             'password' => [ 'required','confirmed','min:8','regex:/[a-z]/','regex:/[A-Z]/','regex:/[0-9]/',],
         ]);
-
+        $data['role'] = User::count() === 0 ? 'admin' : 'user';
         $data['user_status'] = UserStatus::APPROVED;
 
+
+        // $data['password'] = Hash::make($data['password']);
         User::create($data);
 
         return response()->json([
@@ -94,7 +105,8 @@ class AuthenticationController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Login successful'
+            'message' => 'Login successful',
+            'redirect_url' => $user->role === 'admin' ? route('admin.dashboard') : route('site.dashboard')
         ]);
     }
 
@@ -233,3 +245,8 @@ $resetUrl = route('reset.page', ['token' => $token,'email' => $user->email]);
 
 
 
+// Auth::check           check if user exist or not
+// Auth::user            req.user
+// Auth::attempt         check becrypt and session compare passwords and hash it
+// Auth::logout          destroy session
+// guard                 whether use session or api(with tokens)

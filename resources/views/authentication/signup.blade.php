@@ -75,30 +75,25 @@
                                                             class="text-danger">*</span></label>
                                                     <input type="email" name='email' class="form-control" id="useremail"
                                                         placeholder="Enter email address" required>
-                                                        <div class="invalid-feedback" id="email-error"></div>
-                                                    <div class="invalid-feedback">
-                                                        Please enter email
-                                                    </div>
+                                                    <div class="invalid-feedback" id="email-error"> Please enter email</div>
+
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="username" class="form-label">Username <span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" name='name' class="form-control" id="username"
                                                         placeholder="Enter username" required>
-                                                        <div class="invalid-feedback" id="username-error"></div>
-                                                    <div class="invalid-feedback">
-                                                        Please enter username
+                                                    <div class="invalid-feedback" id="username-error"> Please enter username
                                                     </div>
+
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="userphone" class="form-label">Phone <span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" id="userphone" name="phone"
                                                         placeholder="Enter phone number" required>
-                                                          <div class="invalid-feedback" id="username-error"></div>
-                                                    <div class="invalid-feedback">
-                                                        Please enter phone
-                                                    </div>
+                                                    <div class="invalid-feedback" id="phone-error">Please enter phone</div>
+
 
                                                 </div>
 
@@ -117,10 +112,9 @@
                                                             class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon material-shadow-none"
                                                             type="button" id="password-addon"><i
                                                                 class="ri-eye-fill align-middle"></i></button>
-                                                                 <div class="invalid-feedback" id="password-error"></div>
-                                                        <div class="invalid-feedback">
-                                                            Please enter password
-                                                        </div>
+                                                        <div class="invalid-feedback" id="password-error">Please enter
+                                                            password</div>
+
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
@@ -136,10 +130,9 @@
                                                             type="button" id="password-confirm-addon">
                                                             <i class="ri-eye-fill align-middle"></i>
                                                         </button>
-                                                         <div class="invalid-feedback" id="password_confirmation-error"></div>
-                                                        <div class="invalid-feedback">
-                                                            Please enter confirm password
-                                                        </div>
+                                                        <div class="invalid-feedback" id="password_confirmation-error">
+                                                            Please enter confirm password</div>
+
 
                                                     </div>
                                                 </div>
@@ -195,8 +188,7 @@
                                         </div>
 
                                         <div class="mt-5 text-center">
-                                            <p class="mb-0">Already have an account ? <a
-                                                    href="{{ route('signin.page') }}"
+                                            <p class="mb-0">Already have an account ? <a href="{{ route('login') }}"
                                                     class="fw-semibold text-primary text-decoration-underline"> Signin</a>
                                             </p>
                                         </div>
@@ -221,54 +213,85 @@
 
 
     <script src="{{ asset('assets/js/pages/password-addon.init.js') }}"></script>
+
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
+  <script>
+$(document).ready(function() {
 
-            $('#signupForm').on('submit', function(e) {
-                e.preventDefault();
-                if (!this.checkValidity()) {
-                    $(this).addClass('was-validated');
-                    return;
-                }
+    // Password hint live validation
+    $('#password-input').on('keyup', function() {
+        let password = $(this).val();
 
-                var formData = {
-                    name: $('#username').val(),
-                    email: $('#useremail').val(),
-                    phone: $('#userphone').val(),
-                    password: $('#password-input').val(),
-                    password_confirmation: $('#password_confirmation').val(),
-                };
+        $('#pass-length').toggleClass('valid', password.length >= 8).toggleClass('invalid', password.length < 8);
+        $('#pass-lower').toggleClass('valid', /[a-z]/.test(password)).toggleClass('invalid', !/[a-z]/.test(password));
+        $('#pass-upper').toggleClass('valid', /[A-Z]/.test(password)).toggleClass('invalid', !/[A-Z]/.test(password));
+        $('#pass-number').toggleClass('valid', /\d/.test(password)).toggleClass('invalid', !/\d/.test(password));
+    });
 
-                $.ajax({
-                    url: "{{ route('register') }}",
-                    method: "POST",
-                    data: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        setTimeout(function() {
-                            window.location.href = "{{ route('signin.page') }}";
-                        }, 2000);
-                    },
-                    error: function (xhr) {
+    // Handle form submission
+    $('#signupForm').on('submit', function(e) {
+        e.preventDefault();
+
+        // Clear previous errors
+        $('.is-invalid').removeClass('is-invalid');
+        $('.invalid-feedback').each(function() {
+            $(this).text($(this).data('default') || $(this).text());
+        });
+
+        // Check HTML5 validity first
+        if (!this.checkValidity()) {
+            $(this).addClass('was-validated');
+            return;
+        }
+
+        // Check confirm password manually
+        if ($('#password-input').val() !== $('#password_confirmation').val()) {
+            $('#password_confirmation').addClass('is-invalid');
+            $('#password_confirmation-error').text("Passwords do not match");
+            return;
+        }
+
+        // Prepare data
+        var formData = {
+            name: $('#username').val(),
+            email: $('#useremail').val(),
+            phone: $('#userphone').val(),
+            password: $('#password-input').val(),
+            password_confirmation: $('#password_confirmation').val(),
+        };
+
+        // AJAX request
+        $.ajax({
+            url: "{{ route('register') }}",
+            method: "POST",
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                // Redirect after success
+                window.location.href = "{{ route('login') }}";
+            },
+            error: function(xhr) {
                 if (xhr.status === 422) {
                     let errors = xhr.responseJSON.errors;
-
-                    $.each(errors, function (key, messages) {
+                    $.each(errors, function(key, messages) {
                         let input = $('[name="' + key + '"]');
                         input.addClass('is-invalid');
-                        input.next('.invalid-feedback').text(messages[0]);
+                        $('#' + key + '-error').text(messages[0]);
                     });
+                } else {
+                    // Generic error
+                    $('#register-error').removeClass('d-none').text("Something went wrong. Try again!");
                 }
             }
         });
-            });
 
-        });
-    </script>
+    });
+});
+</script>
 
 
 @endsection

@@ -11,6 +11,9 @@ Route::get('/', function () {
 
 });
 
+
+
+Route::middleware(['guest'])->group(function(){
 Route::get('/forget', [AuthenticationController::class, 'forgetPage'])->name('forget.page');
 Route::post('/forget-password' , [AuthenticationController::class, 'forgetPassword'])->name('forget.password');
 
@@ -21,11 +24,13 @@ Route::post('/reset-password' , [AuthenticationController::class, 'resetPassword
 Route::get('/signup', [AuthenticationController::class, 'signupPage'])->name('signup.page');
 Route::post('/register', [AuthenticationController::class, 'register'])->name('register');
 
-Route::get('/login', [AuthenticationController::class, 'loginPage'])->name('signin.page');
+Route::get('/login', [AuthenticationController::class, 'loginPage'])->name('login');
 Route::post('/signin', [AuthenticationController::class, 'login'])->name('signin');
+});
 
-Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
-
+Route::middleware(['auth'])->group(function() {
+    Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
+});
 
 
 
@@ -42,6 +47,8 @@ Route::get('/dashboard' , [AuthenticationController::class, 'dashboardPage'])->n
 // admin routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function(){
 
+Route::get('/dashboard' , [AuthenticationController::class, 'adminDashboardPage'])->name('admin.dashboard');
 });
+// 123456kK
 
 

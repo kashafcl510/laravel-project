@@ -79,9 +79,9 @@
                                                     <input type="email" name='email' class="form-control" id="useremail"
                                                         placeholder="Enter email address" required>
                                                     <div class="invalid-feedback" id="email-error"></div>
-                                                     <div class="invalid-feedback">
-                                                            Please enter email
-                                                        </div>
+                                                    <div class="invalid-feedback">
+                                                        Please enter email
+                                                    </div>
 
 
 
@@ -90,7 +90,8 @@
 
                                                 <div class="mb-3">
                                                     <div class="float-end">
-                                                        <a href="{{ route('forget.page') }}" class="text-muted">Forgot password?</a>
+                                                        <a href="{{ route('forget.page') }}" class="text-muted">Forgot
+                                                            password?</a>
                                                     </div>
                                                     <label for="password-input" class="form-label">Password <span
                                                             class="text-danger">*</span></label>
@@ -103,8 +104,8 @@
                                                             type="button" id="password-addon">
                                                             <i class="ri-eye-fill align-middle"></i>
                                                         </button>
-                                                          <div class="invalid-feedback" id="password-error"></div>
-                                                            <div class="invalid-feedback">
+                                                        <div class="invalid-feedback" id="password-error"></div>
+                                                        <div class="invalid-feedback">
                                                             Please enter password
                                                         </div>
                                                     </div>
@@ -115,7 +116,7 @@
                                                         <label class="form-check-label" for="auth-remember-check">Remember
                                                             me</label>
                                                     </div>
-                                                       <div id="login-error" class="alert alert-danger d-none mb-2 mt-2"></div>
+                                                    <div id="login-error" class="alert alert-danger d-none mb-2 mt-2"></div>
 
                                                     <div class="mt-4">
                                                         <button class="btn btn-success w-100" type="submit">Sign
@@ -197,36 +198,41 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(res) {
-                        window.location.href = "{{ route('site.dashboard') }}";
+                        if (res.success) {
+                            window.location.href = res.redirect_url;
+                        } else {
+                            $('#responseMessage').html('<div class="alert alert-danger">' + res
+                                .message + '</div>');
+                        }
                     },
+
                     error: function(xhr) {
 
-    $('.invalid-feedback').text('');
-    $('input').removeClass('is-invalid');
+                        $('.invalid-feedback').text('');
+                        $('input').removeClass('is-invalid');
 
-    if (xhr.status === 422) {
-        let errors = xhr.responseJSON.errors;
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
 
-        if (errors.email) {
-            $('#useremail')
-                .addClass('is-invalid');
-            $('#email-error')
-                .text(errors.email[0]);
-        }
+                            if (errors.email) {
+                                $('#useremail')
+                                    .addClass('is-invalid');
+                                $('#email-error')
+                                    .text(errors.email[0]);
+                            }
 
-        if (errors.password) {
-            $('#password-input')
-                .addClass('is-invalid');
-            $('#password-error')
-                .text(errors.password[0]);
-        }
-    }
-    else {
-        $('#login-error')
-            .removeClass('d-none')
-            .text(xhr.responseJSON.message);
-    }
-}
+                            if (errors.password) {
+                                $('#password-input')
+                                    .addClass('is-invalid');
+                                $('#password-error')
+                                    .text(errors.password[0]);
+                            }
+                        } else {
+                            $('#login-error')
+                                .removeClass('d-none')
+                                .text(xhr.responseJSON.message);
+                        }
+                    }
 
                 });
             });
